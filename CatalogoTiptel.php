@@ -9,7 +9,8 @@ $con = returnConection();
 $registro=mysqli_query($con ,"select catalogo_cve,desc_45 from mg_catcod where catalogo_id='tiptel' order by 1");
 $vec=[];
 while($reg=mysqli_fetch_array($registro)){
-    $vec[]=$reg;
+    //$vec[]=$reg;
+    array_push($vec,$reg);
 }
 $cad = json_encode($vec);
 echo $cad;

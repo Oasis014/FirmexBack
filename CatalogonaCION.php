@@ -6,10 +6,11 @@ $json = file_get_contents('php://input');
 $params = json_decode($json);
 require("./conexion.php");
 $con = returnConection();
-$registro=mysqli_query($con ,"select catalogo_cve,desc_45 from mg_catcod where catalogo_id='$params->naCION' order by 1");
+$registro=mysqli_query($con ,"select catalogo_cve,desc_45 from mg_catcod where catalogo_id='naCION' order by 1");
 $vec=[];
 while($reg=mysqli_fetch_array($registro)){
-    $vec[]=$reg;
+    //$vec[]=$reg;
+    array_push($vec,$reg);
 }
 $cad = json_encode($vec);
 echo $cad;
