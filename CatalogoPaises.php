@@ -2,14 +2,11 @@
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: Origin, X-Requestes-Whit, Content-Type, Accept');
 header('Content-Type: application/json');
-$json = file_get_contents('php://input');
-$params = json_decode($json);
 require("./conexion.php");
 $con = returnConection();
-$registro=mysqli_query($con ,"select catalogo_cve,desc_45 from mg_catcod where catalogo_id='edociv' order by 1");
+$registro=mysqli_query($con ,"select Pais_id,Pais_desc from mg_paises where pais_id='MX' order by 2;");
 $vec=[];
-while($reg=mysqli_fetch_assoc($registro)){
-    //$vec[]=$reg;
+while($reg=mysqli_fetch_assoc($registro)){    
     array_push($vec,$reg);
 }
 $cad = json_encode($vec);

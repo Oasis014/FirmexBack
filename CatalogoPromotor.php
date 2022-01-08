@@ -6,7 +6,7 @@ $json = file_get_contents('php://input');
 $params = json_decode($json);
 require("./conexion.php");
 $con = returnConection();
-$registro=mysqli_query($con ,"select catalogo_cve,desc_45 from mg_catcod where catalogo_id='edociv' order by 1");
+$registro=mysqli_query($con ,"select Promotor_id,PromotorNombre from mg_promotores order by 2;");
 $vec=[];
 while($reg=mysqli_fetch_assoc($registro)){
     //$vec[]=$reg;

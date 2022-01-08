@@ -8,7 +8,7 @@ require("./conexion.php");
 $con = returnConection();
 $registro=mysqli_query($con ,"select catalogo_cve,desc_45 from mg_catcod where catalogo_id='catpue' order by 1");
 $vec=[];
-while($reg=mysqli_fetch_array($registro)){
+while($reg=mysqli_fetch_assoc($registro)){
     //$vec[]=$reg;
     array_push($vec,$reg);
 }
