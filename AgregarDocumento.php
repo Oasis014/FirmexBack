@@ -7,9 +7,9 @@ $params = json_decode($json);
 require("./conexion.php");
 $con = returnConection();
 
-$rutaDestino="C:/AppServ/www/2021/FirmexGit/Firmex/UserFiles/";
-$rutaOrigen="C:/Users/casa/Downloads/Imta/";
-$nombreArchivo="ElielContreras.pdf";
+$rutaDestino="";
+$rutaOrigen="";
+$nombreArchivo="";
 $urlDocumento=$rutaDestino.$nombreArchivo;
 copy($rutaOrigen.$nombreArchivo, $rutaDestino.$nombreArchivo);
 $registro=mysqli_query($con ,"CALL mgsp_ClientesDocumentos('$params->Id','$params->consDocumento','$params->tipDocumento','$urlDocumento',NOW(),@OutErrorClave,@OutErrorProcedure,@OutErrorDescripcion)");
