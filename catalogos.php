@@ -12,7 +12,37 @@
     'status' => 'error'
   ];
 
-  $mg_catcod = ['actdet', 'acteco', 'bancos', 'catpue', 'cod_id'];
+  // ESTO ARCHIVOS SE ELIMINARIAN:
+  // CatalogoActdet.php => 'actdet'
+  // CatalogoActeco.php => 'acteco'
+  // CatalogoBancos.php => 'bancos'
+  // CatalogoCatpue.php => 'catpue'
+  // CatalogoCod_id.php => 'cod_id'
+  // CatalogoEdociv.php => 'edociv'
+  // CatalogoIdentif.php => 'identif'
+  // CatalogonaCION.php => 'naCION'
+  // CatalogoPerjur.php => 'perjur'
+  // CatalogoProfes.php => 'profes'
+  // CatalogoSexo.php => 'sexo'
+  // CatalogoStscte.php => 'stscte'
+  // CatalogoTipded.php => 'tipded'
+  // CatalogoTipdom.php => 'tipdom'
+  // CatalogoTipgse.php => 'tipgse'
+  // CatalogoTipman.php => 'tipman'
+  // CatalogoTipred.php => 'tipred'
+  // CatalogoTiprel.php => 'tiprel'
+  // CatalogoTiprpe.php => 'tiprpe'
+  // CatalogoTiprrc.php => 'tiprrc'
+  // CatalogoTiptel.php => 'tiptel'
+
+  $mg_catcod = [
+    'actdet',  'acteco',  'bancos',  'catpue',
+    'cod_id',  'edociv',  'identif', 'naCION',
+    'perjur',  'profes',  'sexo',    'stscte',
+    'tipded',  'tipdom',  'tipgse',  'tipman',
+    'tipred',  'tiprel',  'tiprpe',  'tiprrc',
+    'tiptel'
+  ];
 
   if ( isset($_GET['catid']) && !empty($_GET['catid']) ) {
     $catId = $_GET['catid'];
