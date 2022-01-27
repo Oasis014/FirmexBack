@@ -39,7 +39,7 @@
       isset($_FILES['file']) &&
       isset($_FILES['file']['error'])
   ) {
-
+    $curDate = date("Y-m-d");
     $fileTmpPath = $_FILES['file']['tmp_name'];
     $infoFile = pathinfo($_FILES['file']['name']);
     $data = json_decode($_POST['data']);
@@ -59,7 +59,7 @@
           '$data->consDoc',
           '$data->idDoc',
           '$dest_path',
-          '$data->fechaAlta',
+          '$curDate',
           @OutErrorClave,
           @OutErrorProcedure,
           @OutErrorDescripcion)"
