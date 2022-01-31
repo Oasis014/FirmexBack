@@ -17,13 +17,17 @@
   // OBTENER DOCUMENTOS
   if ( 'GET' == $method && isset($_GET['id']) && !empty($_GET['id']) ) {
     $sql = "SELECT
-        Consecutivo AS consecutivo,
-        TipoDocumento AS tipoDocumento,
-        UrlDocumento AS urlDocumento,
-        FechaAlta AS fechaAlta
-      FROM mg_ctedoctos
-      WHERE NumeroCliente = {$_GET['id']}
-      ORDER BY TipoDocumento";
+        doc.NumeroCliente AS idCliente,
+        doc.TipoDocumento AS tipoDocumento,
+        doc.NombreDocumento AS nombreDocumento,
+        doc.FechaAlta AS fechaAlta,
+        cat.desc_45 AS descCorta
+      FROM mg_ctedoctos doc
+      LEFT JOIN mg_catcod cat
+        ON doc.TipoDocumento = cat.Catalogo_cve
+      WHERE doc.NumeroCliente = {$_GET['id']}
+        AND cat.Catalogo_id = 'tipdoc'
+      ORDER BY TipoDocumento;";
 
     $rows = mysqli_query($conn, $sql);
     while( $reg = mysqli_fetch_assoc($rows) ) {
@@ -56,9 +60,8 @@
       $registro = mysqli_query($conn,
         "CALL mgsp_ClientesDocumentos(
           '$data->userId',
-          '$data->consDoc',
           '$data->idDoc',
-          '$dest_path',
+          '$newFileName',
           '$curDate',
           @OutErrorClave,
           @OutErrorProcedure,

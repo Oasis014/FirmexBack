@@ -41,13 +41,16 @@
     'perjur',  'profes',  'sexo',    'stscte',
     'tipded',  'tipdom',  'tipgse',  'tipman',
     'tipred',  'tiprel',  'tiprpe',  'tiprrc',
-    'tiptel'
+    'tiptel',  'tipdoc'
   ];
 
   if ( isset($_GET['catid']) && !empty($_GET['catid']) ) {
     $catId = $_GET['catid'];
     if ( in_array($catId, $mg_catcod) ) {
-      $query = "SELECT catalogo_cve, desc_45 FROM mg_catcod WHERE catalogo_id = '$catId' ORDER BY catalogo_cve";
+      $query = "SELECT
+          Catalogo_cve AS catalogo_cve,
+          desc_45
+        FROM mg_catcod WHERE Catalogo_id = '$catId' ORDER BY Catalogo_cve";
       $registro = mysqli_query($conn, $query);
       $rows = [];
       while( $reg = mysqli_fetch_assoc($registro) ){
