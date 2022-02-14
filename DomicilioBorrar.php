@@ -9,7 +9,7 @@ $con = returnConection();
 $registro=mysqli_query($con ,"CALL mgsp_ClientesDomiciliosBorrar('$params->Id','$params->TipoDom',@OutErrorClave,@OutErrorProcedure,@OutErrorDescripcion);");
 $row=mysqli_query($con,"SELECT @OutErrorClave as errorClave,@OutErrorProcedure as errorSp,@OutErrorDescripcion as errorDescripcion");
 $vec=[];
-while($reg=mysqli_fetch_array($row)){
+while($reg=mysqli_fetch_assoc($row)){
     $vec[]=$reg;
 }
 $cad = json_encode($vec);
