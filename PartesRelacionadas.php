@@ -36,6 +36,25 @@
             $vec[] = $reg;
         }
 
+    } else if ( 'GET' === $_SERVER['REQUEST_METHOD'] &&
+        isset($_GET['userId']) && !empty($_GET['userId'])
+    ) {
+        $userId = $_GET['userId'];
+
+        $query = "SELECT"
+            . " Consecutivo,"
+            . " ParteRelacionadaParRel,"
+            . " NombreParRel,"
+            . " RFCParRel,"
+            . " DireccionParRel"
+        . " FROM mg_cteparrel"
+        . " WHERE NumeroCliente = '{$userId}'";
+
+        $registro = mysqli_query($con, $query);
+
+        while ( $reg = mysqli_fetch_assoc($registro) ) {
+            $vec[] = $reg;
+        }
     }
 
     $data = json_encode($vec, JSON_INVALID_UTF8_IGNORE);

@@ -57,7 +57,7 @@
             . " @OutSaldoCuentaRefCom as SaldoCuentaRefCom, "
             . " @OutErrorClave as errorClave, "
             . " @OutErrorProcedure as errorSp, "
-            . " @OutErrorDescripcion as errorDescripcion;");
+            . " @OutErrorDescripcion as errorDescripcion");
 
         while( $reg = mysqli_fetch_assoc($row) ) {
             $vec[] = $reg;

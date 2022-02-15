@@ -13,7 +13,7 @@
         $json = file_get_contents('php://input');
         $params = json_decode($json, true);
 
-        $query = "CALL mgsp_ClientesDomicilios("
+        $query = "CALL mgsp_ClientesRiesgosComunes("
             . " '{$params['NumeroCliente']}', "
             . " '{$params['Consecutivo']}', "
             . " '{$params['GrupoRiesgoComunRgoCom']}', "
@@ -36,6 +36,25 @@
             $vec[] = $reg;
         }
 
+    } else if ( 'GET' === $_SERVER['REQUEST_METHOD'] &&
+        isset($_GET['userId']) && !empty($_GET['userId'])
+    ) {
+        $userId = $_GET['userId'];
+
+        $query = "SELECT"
+            . " Consecutivo,"
+            . " GrupoRiesgoComunRgoCom,"
+            . " NombreRgoCom,"
+            . " RFCRgoCom,"
+            . " DireccionRgoCom"
+        . " FROM mg_ctergocom"
+        . " WHERE NumeroCliente = '{$userId}'";
+
+        $registro = mysqli_query($con, $query);
+
+        while ( $reg = mysqli_fetch_assoc($registro) ) {
+            $vec[] = $reg;
+        }
     }
 
     $data = json_encode($vec, JSON_INVALID_UTF8_IGNORE);

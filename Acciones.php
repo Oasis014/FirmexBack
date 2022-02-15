@@ -42,6 +42,31 @@
             $vec[] = $reg;
         }
 
+    } else if ( 'GET' === $_SERVER['REQUEST_METHOD'] &&
+        isset($_GET['userId']) && !empty($_GET['userId'])
+    ) {
+        $userId = $_GET['userId'];
+
+        $query = "SELECT"
+                . " NumeroCliente,"
+                . " Consecutivo,"
+                . " FechaCompra1aAccion,"
+                . " ParteInicialSocial,"
+                . " FechaPago,"
+                . " ParteSocialActual,"
+                . " CostoAcciones,"
+                . " FormaPagoAcciones,"
+                . " RetirablesA,"
+                . " RetirablesB,"
+                . " TotalAcciones"
+            . " FROM mg_cteaccion"
+            . " WHERE NumeroCliente = '{$userId}'";
+
+        $registro = mysqli_query($con, $query);
+
+        while ( $reg = mysqli_fetch_assoc($registro) ) {
+            $vec[] = $reg;
+        }
     }
 
     $data = json_encode($vec, JSON_INVALID_UTF8_IGNORE);

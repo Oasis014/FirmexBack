@@ -37,7 +37,7 @@
             $vec[] = $reg;
         }
 
-    } else if ( 'GET' === $_SERVER['REQUEST_METHOD'] && 
+    } else if ( 'GET' === $_SERVER['REQUEST_METHOD'] &&
       isset($_GET['userId']) && !empty($_GET['userId']) ) {
 
         $userId = $_GET['userId'];
@@ -50,7 +50,7 @@
           . " GastosMensuales, "
           . " FlujoEfectivo "
           . " FROM mg_cteacteco WHERE NumeroCliente = '{$userId}'";
-        
+
         $registro = mysqli_query($con, $query);
 
         while ( $reg = mysqli_fetch_assoc($registro) ) {

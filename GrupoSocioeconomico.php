@@ -13,17 +13,13 @@
         $json = file_get_contents('php://input');
         $params = json_decode($json, true);
 
-        $query = "CALL mgsp_ClientesDomicilios("
-            . " '{$params['Id']}', "
-            . " '{$params['TipoDom']}', "
-            . " '{$params['Calle']}', "
-            . " '{$params['NoEx']}', "
-            . " '{$params['NoIn']}', "
-            . " '{$params['CodPos']}', "
-            . " '{$params['Colonia']}', "
-            . " '{$params['Municipio']}', "
-            . " '{$params['Estado']}', "
-            . " '{$params['Pais']}', "
+        $query = "CALL mgsp_ClientesGruposSocioeconomicos("
+            . " '{$params['NumeroCliente']}', "
+            . " '{$params['Consecutivo']}', "
+            . " '{$params['GrupoSocioeconomicoGpoSoc']}', "
+            . " '{$params['NombreGpoSoc']}', "
+            . " '{$params['RFCGpoSoc']}', "
+            . " '{$params['DireccionGpoSoc']}', "
             . " @OutErrorClave, "
             . " @OutErrorProcedure, "
             . " @OutErrorDescripcion)";
@@ -40,6 +36,25 @@
             $vec[] = $reg;
         }
 
+    } else if ( 'GET' === $_SERVER['REQUEST_METHOD'] &&
+        isset($_GET['userId']) && !empty($_GET['userId'])
+    ) {
+        $userId = $_GET['userId'];
+
+        $query = "SELECT"
+            . " Consecutivo,"
+            . " GrupoSocioeconomicoGpoSoc,"
+            . " NombreGpoSoc,"
+            . " RFCGpoSoc,"
+            . " DireccionGpoSoc"
+        . " FROM mg_ctegposoc"
+        . " WHERE NumeroCliente = '{$userId}'";
+
+        $registro = mysqli_query($con, $query);
+
+        while ( $reg = mysqli_fetch_assoc($registro) ) {
+            $vec[] = $reg;
+        }
     }
 
     $data = json_encode($vec, JSON_INVALID_UTF8_IGNORE);
