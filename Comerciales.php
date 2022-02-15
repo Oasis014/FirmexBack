@@ -42,7 +42,7 @@
 
         $query = "CALL mgsp_ClientesReferenciasComercialesConsulta("
         . " '{$params['Id']}', "
-        . " '{$params['Consecutivo']}', "
+        . " '1', " /* '{$params['Consecutivo']}' */
         . " @OutNombreRefCom, "
         . " @OutLimiteCreditoRefCom, "
         . " @OutSaldoCuentaRefCom, "

@@ -14,16 +14,12 @@
         $params = json_decode($json, true);
 
         $query = "CALL mgsp_ClientesDomicilios("
-            . " '{$params['Id']}', "
-            . " '{$params['TipoDom']}', "
-            . " '{$params['Calle']}', "
-            . " '{$params['NoEx']}', "
-            . " '{$params['NoIn']}', "
-            . " '{$params['CodPos']}', "
-            . " '{$params['Colonia']}', "
-            . " '{$params['Municipio']}', "
-            . " '{$params['Estado']}', "
-            . " '{$params['Pais']}', "
+            . " '{$params['NumeroCliente']}', "
+            . " '{$params['Consecutivo']}', "
+            . " '{$params['GrupoRiesgoComunRgoCom']}', "
+            . " '{$params['NombreRgoCom']}', "
+            . " '{$params['RFCRgoCom']}', "
+            . " '{$params['DireccionRgoCom']}', "
             . " @OutErrorClave, "
             . " @OutErrorProcedure, "
             . " @OutErrorDescripcion)";
@@ -40,8 +36,6 @@
             $vec[] = $reg;
         }
 
-
-    /* OBTIENE UN DOMICILIO UNICAMENTE DE UN CLIENTE ESPECIFICO :: sustituye : DomiciliosConsulta.php */
     }
 
     $data = json_encode($vec, JSON_INVALID_UTF8_IGNORE);

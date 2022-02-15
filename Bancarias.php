@@ -41,7 +41,6 @@
 
         $userId = $_GET['userId'];
         $query = "SELECT"
-          . " NumeroCliente, "
           . " Consecutivo, "
           . " InstitucionRefBan, "
           . " AntiguedadRefBan, "
