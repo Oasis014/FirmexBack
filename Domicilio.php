@@ -47,35 +47,34 @@
     isset($_GET['domId']) && !empty($_GET['domId'])
     ) {
 
-    $userId = $_GET['userId'];
-    $domId = $_GET['domId'];
+        $userId = $_GET['userId'];
+        $domId = $_GET['domId'];
 
-    $query = "SELECT "
-    . " NumeroCliente as 'numeroCliente', "
-    . " TipoDomicilio  'tipoDomicilio', "
-    . " Calle as 'calle', "
-    . " NumeroExterior as 'numeroExterior', "
-    . " NumeroInterior as 'numeroInterior', "
-    . " CodigoPostal as 'codigoPostal', "
-    . " Colonia as 'colonia', "
-    . " Municipio as 'municipio', "
-    . " Estado as 'estado', "
-    . " Pais as 'pais'  "
-    . " FROM mg_ctedom "
-    . " WHERE NumeroCliente = {$userId} AND TipoDomicilio = {$domId};";
-    $registro = mysqli_query($con, $query);
+        $query = "SELECT "
+        . " NumeroCliente as 'numeroCliente', "
+        . " TipoDomicilio  'tipoDomicilio', "
+        . " Calle as 'calle', "
+        . " NumeroExterior as 'numeroExterior', "
+        . " NumeroInterior as 'numeroInterior', "
+        . " CodigoPostal as 'codigoPostal', "
+        . " Colonia as 'colonia', "
+        . " Municipio as 'municipio', "
+        . " Estado as 'estado', "
+        . " Pais as 'pais'  "
+        . " FROM mg_ctedom "
+        . " WHERE NumeroCliente = {$userId} AND TipoDomicilio = {$domId};";
+        $registro = mysqli_query($con, $query);
 
-    while ( $reg = mysqli_fetch_assoc($registro) ) {
-        $vec[] = $reg;
-    }
+        while ( $reg = mysqli_fetch_assoc($registro) ) {
+            $vec[] = $reg;
+        }
 
-
-    /** ELIMINA UN DOMICILIO DE UN CLIENTE :: sustituye : DomicilioBorrar.php */
+        /* OBTIENE TODOS LOS DOMICILIOS DE UN CLIENTE */
     } else if ( 'GET' === $_SERVER['REQUEST_METHOD'] && isset($_GET['userId']) && !empty($_GET['userId'])) {
 
         $userId = $_GET['userId'];
+        // TODO hacer inner para obtener el texto de "tipoDomicilio", colonia, municipio, estaod y pais
         $query = "SELECT "
-        . " NumeroCliente as 'numeroCliente', "
         . " TipoDomicilio  'tipoDomicilio', "
         . " Calle as 'calle', "
         . " NumeroExterior as 'numeroExterior', "
@@ -93,11 +92,11 @@
         }
 
 
+    /** ELIMINA UN DOMICILIO DE UN CLIENTE :: sustituye : DomicilioBorrar.php */
     } else if ( 'DELETE' === $_SERVER['REQUEST_METHOD'] &&
         isset($_GET['userId']) && !empty($_GET['userId']) &&
         isset($_GET['domId']) && !empty($_GET['domId'])
     ) {
-
 
         $json = file_get_contents('php://input');
         $params = json_decode($json);
