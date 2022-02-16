@@ -2,24 +2,26 @@
     header('Access-Control-Allow-Origin: *');
     header('Access-Control-Allow-Headers: Origin, X-Requestes-Whit, Content-Type, Accept');
     header('Content-Type: application/json');
+    header('Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT');
 
     require("./conexion.php");
     $con = returnConection();
     $data = [];
     $vec = [];
+    $method = $_SERVER['REQUEST_METHOD'];
 
-    if ( 'POST' === $_SERVER['REQUEST_METHOD'] ) {
+    if ( 'POST' === $method ) {
 
         $json = file_get_contents('php://input');
         $params = json_decode($json, true);
 
         $query = "CALL mgsp_ClientesDomicilios("
-            . " '{$params['Id']}', "
-            . " '{$params['TipoDom']}', "
+            . " '{$params['NumeroCliente']}', "
+            . " '{$params['TipoDomicilio']}', "
             . " '{$params['Calle']}', "
-            . " '{$params['NoEx']}', "
-            . " '{$params['NoIn']}', "
-            . " '{$params['CodPos']}', "
+            . " '{$params['NumeroExterior']}', "
+            . " '{$params['NumeroInterior']}', "
+            . " '{$params['CodigoPostal']}', "
             . " '{$params['Colonia']}', "
             . " '{$params['Municipio']}', "
             . " '{$params['Estado']}', "
@@ -27,8 +29,6 @@
             . " @OutErrorClave, "
             . " @OutErrorProcedure, "
             . " @OutErrorDescripcion)";
-
-        error_log($query);
 
         $registro = mysqli_query($con, $query);
         $row = mysqli_query($con,
@@ -42,25 +42,25 @@
 
 
     /* OBTIENE UN DOMICILIO UNICAMENTE DE UN CLIENTE ESPECIFICO :: sustituye : DomiciliosConsulta.php */
-    } else if ( 'GET' === $_SERVER['REQUEST_METHOD'] &&
-    isset($_GET['userId']) && !empty($_GET['userId']) &&
-    isset($_GET['domId']) && !empty($_GET['domId'])
+    } else if ( 'GET' === $method &&
+        isset($_GET['userId']) && !empty($_GET['userId']) &&
+        isset($_GET['domId']) && !empty($_GET['domId'])
     ) {
 
         $userId = $_GET['userId'];
         $domId = $_GET['domId'];
 
         $query = "SELECT "
-        . " NumeroCliente as 'numeroCliente', "
-        . " TipoDomicilio as 'tipoDomicilio', "
-        . " Calle as 'calle', "
-        . " NumeroExterior as 'numeroExterior', "
-        . " NumeroInterior as 'numeroInterior', "
-        . " CodigoPostal as 'codigoPostal', "
-        . " Colonia as 'colonia', "
-        . " Municipio as 'municipio', "
-        . " Estado as 'estado', "
-        . " Pais as 'pais'  "
+        . " NumeroCliente , "
+        . " TipoDomicilio , "
+        . " Calle , "
+        . " NumeroExterior , "
+        . " NumeroInterior , "
+        . " CodigoPostal , "
+        . " Colonia , "
+        . " Municipio , "
+        . " Estado , "
+        . " Pais   "
         . " FROM mg_ctedom "
         . " WHERE NumeroCliente = {$userId} AND TipoDomicilio = {$domId};";
         $registro = mysqli_query($con, $query);
@@ -70,19 +70,19 @@
         }
 
         /* OBTIENE TODOS LOS DOMICILIOS DE UN CLIENTE */
-    } else if ( 'GET' === $_SERVER['REQUEST_METHOD'] && isset($_GET['userId']) && !empty($_GET['userId'])) {
+    } else if ( 'GET' === $method && isset($_GET['userId']) && !empty($_GET['userId'])) {
 
         $userId = $_GET['userId'];
         // TODO hacer inner para obtener el texto de "tipoDomicilio", colonia, municipio, estaod y pais
         $query = "SELECT "
-        . " TipoDomicilio  'tipoDomicilio', "
-        . " Calle as 'calle', "
-        . " NumeroExterior as 'numeroExterior', "
-        . " NumeroInterior as 'numeroInterior', "
-        . " CodigoPostal as 'codigoPostal', "
-        . " Colonia as 'colonia', "
-        . " Municipio as 'municipio', "
-        . " Estado as 'estado', "
+        . " TipoDomicilio , "
+        . " Calle , "
+        . " NumeroExterior , "
+        . " NumeroInterior , "
+        . " CodigoPostal , "
+        . " Colonia , "
+        . " Municipio , "
+        . " Estado , "
         . " Pais as 'pais'  "
         . " FROM mg_ctedom WHERE NumeroCliente = {$userId};";
         $registro = mysqli_query($con, $query);
@@ -93,17 +93,17 @@
 
 
     /** ELIMINA UN DOMICILIO DE UN CLIENTE :: sustituye : DomicilioBorrar.php */
-    } else if ( 'DELETE' === $_SERVER['REQUEST_METHOD'] &&
+    } else if ( 'DELETE' === $method &&
         isset($_GET['userId']) && !empty($_GET['userId']) &&
         isset($_GET['domId']) && !empty($_GET['domId'])
     ) {
 
-        $json = file_get_contents('php://input');
-        $params = json_decode($json);
+        $userId = $_GET['userId'];
+        $domId = $_GET['domId'];
 
         $query = "CALL mgsp_ClientesDomiciliosBorrar("
-        . " '{$params->Id}', "
-        . " '{$params->TipoDom}', "
+        . " '{$userId}', "
+        . " '{$domId}', "
         . " @OutErrorClave, "
         . " @OutErrorProcedure, "
         . " @OutErrorDescripcion);";
@@ -119,9 +119,6 @@
         }
 
     }
-
-    // TODO agregar metodo para actualizar un domicilio.. o se usa el mismo para guardar ?? 
-    // TODO opcion para ACTUALIZAR un registro. o se usa el mismo de GUARDAR??
 
     $data = json_encode($vec, JSON_INVALID_UTF8_IGNORE);
     echo $data;
