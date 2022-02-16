@@ -69,6 +69,9 @@
         }
     }
 
+    // TODO opcion para elmimar un registro, usando metodo "DELETE" y IDs necesarios
+    // TODO opcion para ACTUALIZAR un registro. o se usa el mismo de GUARDAR??
+
     $data = json_encode($vec, JSON_INVALID_UTF8_IGNORE);
     echo $data;
 

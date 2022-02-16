@@ -40,7 +40,7 @@
         isset($_GET['userId']) && !empty($_GET['userId'])
     ) {
         $userId = $_GET['userId'];
-
+        // TODO join para obtener los nombres , en lugar del id 
         $query = "SELECT"
             . " Consecutivo,"
             . " ParteRelacionadaParRel,"
@@ -56,6 +56,9 @@
             $vec[] = $reg;
         }
     }
+
+    // TODO opcion para elmimar un registro, usando metodo "DELETE" y IDs necesarios
+    // TODO opcion para ACTUALIZAR un registro. o se usa el mismo de GUARDAR??
 
     $data = json_encode($vec, JSON_INVALID_UTF8_IGNORE);
     echo $data;

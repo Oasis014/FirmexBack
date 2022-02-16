@@ -52,7 +52,7 @@
 
         $query = "SELECT "
         . " NumeroCliente as 'numeroCliente', "
-        . " TipoDomicilio  'tipoDomicilio', "
+        . " TipoDomicilio as 'tipoDomicilio', "
         . " Calle as 'calle', "
         . " NumeroExterior as 'numeroExterior', "
         . " NumeroInterior as 'numeroInterior', "
@@ -119,6 +119,9 @@
         }
 
     }
+
+    // TODO agregar metodo para actualizar un domicilio.. o se usa el mismo para guardar ?? 
+    // TODO opcion para ACTUALIZAR un registro. o se usa el mismo de GUARDAR??
 
     $data = json_encode($vec, JSON_INVALID_UTF8_IGNORE);
     echo $data;
