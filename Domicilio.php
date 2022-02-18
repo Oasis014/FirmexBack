@@ -83,7 +83,7 @@
         . " Colonia , "
         . " Municipio , "
         . " Estado , "
-        . " Pais as 'pais'  "
+        . " Pais "
         . " FROM mg_ctedom WHERE NumeroCliente = {$userId};";
         $registro = mysqli_query($con, $query);
 
