@@ -55,9 +55,34 @@
         while ( $reg = mysqli_fetch_assoc($registro) ) {
             $vec[] = $reg;
         }
+    } 
+    else if ( 'DELETE' === $_SERVER['REQUEST_METHOD'] &&
+    isset($_GET['userId']) && !empty($_GET['userId'])) {
+        // TODO opcion para elmimar un registro, usando metodo "DELETE"
+        $json = file_get_contents('php://input');
+        $params = json_decode($json, true);
+
+        $query = "CALL mgsp_ClientesGruposSocioeconomicosBorrar("
+            . " '{$params['NumeroCliente']}', "
+            . " '{$params['Consecutivo']}', "      
+            . " @OutErrorClave, "
+            . " @OutErrorProcedure, "
+            . " @OutErrorDescripcion)";
+
+            error_log($query);
+
+        $registro = mysqli_query($con, $query);
+         $row = mysqli_query($con,
+            "SELECT @OutErrorClave as errorClave, "
+            . " @OutErrorProcedure as errorSp, "
+            . " @OutErrorDescripcion as errorDescripcion");
+
+        while( $reg = mysqli_fetch_assoc($row) ) {
+            $vec[] = $reg;
+        } 
     }
 
-    // TODO opcion para elmimar un registro, usando metodo "DELETE"
+    
     // TODO opcion para ACTUALIZAR un registro. o se usa el mismo de GUARDAR??
 
     $data = json_encode($vec, JSON_INVALID_UTF8_IGNORE);
