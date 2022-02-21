@@ -2,20 +2,22 @@
     header('Access-Control-Allow-Origin: *');
     header('Access-Control-Allow-Headers: Origin, X-Requestes-Whit, Content-Type, Accept');
     header('Content-Type: application/json');
+    header('Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT');
 
     require("./conexion.php");
     $con = returnConection();
     $data = [];
     $vec = [];
+    $method = $_SERVER['REQUEST_METHOD'];
 
-    if ( 'POST' === $_SERVER['REQUEST_METHOD'] ) {
+    if ( 'POST' === $method ) {
 
         $json = file_get_contents('php://input');
         $params = json_decode($json, true);
 
         $query = "CALL mgsp_ClientesPartesRelacionadas("
-            . " '{$params['NumeroCliente']}', "
-            . " '{$params['Consecutivo']}', "
+            . " {$params['NumeroCliente']}, "
+            . " 0, "
             . " '{$params['ParteRelacionadaParRel']}', "
             . " '{$params['NombreParRel']}', "
             . " '{$params['RFCParRel']}', "
@@ -36,12 +38,13 @@
             $vec[] = $reg;
         }
 
-    } else if ( 'GET' === $_SERVER['REQUEST_METHOD'] &&
+    } else if ( 'GET' === $method &&
         isset($_GET['userId']) && !empty($_GET['userId'])
     ) {
         $userId = $_GET['userId'];
-        // TODO join para obtener los nombres , en lugar del id 
+        // TODO join para obtener los nombres , en lugar del id
         $query = "SELECT"
+            . " NumeroCliente,"
             . " Consecutivo,"
             . " ParteRelacionadaParRel,"
             . " NombreParRel,"
@@ -55,35 +58,63 @@
         while ( $reg = mysqli_fetch_assoc($registro) ) {
             $vec[] = $reg;
         }
-    }
-    else if ( 'DELETE' === $_SERVER['REQUEST_METHOD'] &&
-    isset($_GET['userId']) && !empty($_GET['userId'])) {
-        // TODO opcion para elmimar un registro, usando metodo "DELETE" y IDs necesarios
-          
+
+    } else if ( 'PUT' === $method ) {
+
         $json = file_get_contents('php://input');
         $params = json_decode($json, true);
-    
-        $query = "CALL mgsp_ClientesPartesRelacionadasBorrar("
-            . " '{$params['NumeroCliente']}', "
-            . " '{$params['Consecutivo']}', "      
+
+        $query = "CALL mgsp_ClientesPartesRelacionadas("
+            . " {$params['NumeroCliente']}, "
+            . " {$params['Consecutivo']}, "
+            . " '{$params['ParteRelacionadaParRel']}', "
+            . " '{$params['NombreParRel']}', "
+            . " '{$params['RFCParRel']}', "
+            . " '{$params['DireccionParRel']}', "
             . " @OutErrorClave, "
             . " @OutErrorProcedure, "
             . " @OutErrorDescripcion)";
-    
-            error_log($query);
-    
+
+        error_log($query);
+
         $registro = mysqli_query($con, $query);
         $row = mysqli_query($con,
             "SELECT @OutErrorClave as errorClave, "
             . " @OutErrorProcedure as errorSp, "
             . " @OutErrorDescripcion as errorDescripcion");
-    
+
         while( $reg = mysqli_fetch_assoc($row) ) {
             $vec[] = $reg;
-        } 
+        }
+
+    } else if ( 'DELETE' === $method
+        && isset($_GET['NumeroCliente']) && !empty($_GET['NumeroCliente'])
+        && isset($_GET['Consecutivo'])
+    ) {
+
+        $id = $_GET['NumeroCliente'];
+        $cons = $_GET['Consecutivo'];
+
+        $query = "CALL mgsp_ClientesPartesRelacionadasBorrar("
+            . " {$id}, "
+            . " {$cons}, "
+            . " @OutErrorClave, "
+            . " @OutErrorProcedure, "
+            . " @OutErrorDescripcion)";
+
+            error_log($query);
+
+        $registro = mysqli_query($con, $query);
+        $row = mysqli_query($con,
+            "SELECT @OutErrorClave as errorClave, "
+            . " @OutErrorProcedure as errorSp, "
+            . " @OutErrorDescripcion as errorDescripcion");
+
+        while( $reg = mysqli_fetch_assoc($row) ) {
+            $vec[] = $reg;
+        }
     }
-    
-    // TODO opcion para ACTUALIZAR un registro. o se usa el mismo de GUARDAR??
+
 
     $data = json_encode($vec, JSON_INVALID_UTF8_IGNORE);
     echo $data;

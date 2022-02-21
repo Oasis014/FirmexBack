@@ -30,7 +30,7 @@
       WHERE doc.NumeroCliente = {$_GET['id']}
         AND cat.Catalogo_id = 'tipdoc'
       ORDER BY TipoDocumento;";
-
+    error_log($sql);
     $rows = mysqli_query($conn, $sql);
     while( $reg = mysqli_fetch_assoc($rows) ) {
         array_push($response['data'], $reg);
@@ -68,6 +68,7 @@
         . " @OutErrorClave,"
         . " @OutErrorProcedure,"
         . " @OutErrorDescripcion)";
+      error_log($query);
       $registro = mysqli_query($conn, $query);
 
       $row = mysqli_query(
@@ -104,6 +105,7 @@
     . " @OutErrorClave,"
     . " @OutErrorProcedure,"
     . " @OutErrorDescripcion)";
+    error_log($query);
     $registro = mysqli_query($conn, $query);
 
     $row = mysqli_query($con,"SELECT"
