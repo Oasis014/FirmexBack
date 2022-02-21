@@ -19,6 +19,7 @@
   if ( 'GET' == $method && isset($_GET['id']) && !empty($_GET['id']) ) {
     $sql = "SELECT
         doc.NumeroCliente AS idCliente,
+        doc.Consecutivo,
         doc.TipoDocumento AS tipoDocumento,
         doc.NombreDocumento AS nombreDocumento,
         doc.FechaAlta AS fechaAlta,
@@ -60,6 +61,7 @@
 
       $query = "CALL mgsp_ClientesDocumentos("
         . " {$data->userId},"
+        . " 0,"
         . " '{$data->idDoc}',"
         . " '$newFileName',"
         . " '$curDate',"
@@ -83,14 +85,14 @@
   }
 
   // ELIMINAR DOCUMENTO
-  if ( 'DELETE' === $method && 
+  if ( 'DELETE' === $method &&
       isset($_GET['userId']) && !empty($_GET['userId']) &&
-      isset($_GET['tipoId']) && !empty($_GET['tipoId']) &&
+      isset($_GET['consecutivoId']) && !empty($_GET['consecutivoId']) &&
       isset($_GET['nomDoc']) && !empty($_GET['nomDoc'])
   ) {
 
     $userId = $_GET['userId'];
-    $tipoId = $_GET['tipoId'];
+    $consecutivoId = $_GET['consecutivoId'];
     $nomDoc = $_GET['nomDoc'];
 
     $unlinkFile = "./documentacion/user_{$userId}/{$nomDoc}";
@@ -98,7 +100,7 @@
 
     $query = "CALL mgsp_ClientesDocumentosBorrar("
     . " {$userId},"
-    . " '{$tipoId}',"
+    . " {$consecutivoId},"
     . " @OutErrorClave,"
     . " @OutErrorProcedure,"
     . " @OutErrorDescripcion)";
