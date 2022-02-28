@@ -89,12 +89,13 @@
   if ( 'DELETE' === $method &&
       isset($_GET['userId']) && !empty($_GET['userId']) &&
       isset($_GET['consecutivoId']) && !empty($_GET['consecutivoId']) &&
-      isset($_GET['nomDoc']) && !empty($_GET['nomDoc'])
+      isset($_GET['nom']) && !empty($_GET['nom'])
   ) {
 
     $userId = $_GET['userId'];
     $consecutivoId = $_GET['consecutivoId'];
-    $nomDoc = $_GET['nomDoc'];
+    $tipoDoc = $_GET['tipo'];
+    $nomDoc = $_GET['nom'];
 
     $unlinkFile = "./documentacion/user_{$userId}/{$nomDoc}";
     unlink($unlinkFile);

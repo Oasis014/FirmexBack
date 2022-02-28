@@ -12,7 +12,7 @@
         $params = json_decode($json, true);
 
         $query = "CALL mgsp_ClientesDatosGenerales("
-            . " {$params['Id']}, "
+            . " {$params['NumeroCliente']}, "
             . " '{$params['Sucursal']}', "
             . " '{$params['ApellidoPaterno']}', "
             . " '{$params['ApellidoMaterno']}', "

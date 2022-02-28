@@ -16,7 +16,7 @@
         $params = json_decode($json, true);
 
         $query = "CALL mgsp_ClientesReferenciasPersonales("
-          . " {$params['Id']}, "
+          . " {$params['NumeroCliente']}, "
           . " 0, "
           . " '{$params['NombreRefPer']}', "
           . " '{$params['TelefonoRefPer']}', "

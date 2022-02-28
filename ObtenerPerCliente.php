@@ -8,8 +8,8 @@ $con = returnConection();
 
 $registro=mysqli_query($con ,"select NumeroCLiente, Sucursal, PrimerNombre, ApellidoPaterno, RazonSocial, RFC, RazonSocial, PersonalidadJuridica, EmailPersonal, Celular from mg_clientes");
 $vec=[];
-while($reg=mysqli_fetch_array($registro)){
+while($reg=mysqli_fetch_assoc($registro)){
     $vec[]=$reg;
 }
-$cad = json_encode($vec);
+$cad = json_encode($vec, JSON_INVALID_UTF8_IGNORE);
 echo $cad;
