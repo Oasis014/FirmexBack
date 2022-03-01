@@ -93,7 +93,7 @@
         $numeroCliente = $_GET['NumeroCliente'];
         $consecutivo = $_GET['Consecutivo'];
 
-        $query = "CALL mgsp_ClientesCuentasBancariasBorrar("
+        $query = "CALL mgsp_ClientesReferenciasBancariasBorrar("
           . " {$numeroCliente}, "
           . " {$consecutivo}, "
           . " @OutErrorClave, "
