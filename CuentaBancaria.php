@@ -44,13 +44,17 @@
         $userId = $_GET['userId'];
 
         $query = "SELECT"
-            . " NumeroCliente,"
-            . " Consecutivo,"
-            . " NombreCuentaBancariaCtaBan,"
-            . " BancoCtaBan,"
-            . " NumeroCuentaCtaBan,"
-            . " ClaveInterbancariaCtaBan"
-        . " FROM mg_ctectaban"
+            . " cte.NumeroCliente,"
+            . " cte.Consecutivo,"
+            . " cte.NombreCuentaBancariaCtaBan,"
+            . " cte.BancoCtaBan,"
+            . " cte.NumeroCuentaCtaBan,"
+            . " cte.ClaveInterbancariaCtaBan,"
+            . " cat.desc_45 as BancoCtaBanDesc "
+        . " FROM mg_ctectaban cte"
+          . " INNER JOIN mg_catcod cat "
+            . " ON cte.BancoCtaBan = cat.Catalogo_cve "
+            . " AND cat.Catalogo_id = 'bancos' "
         . " WHERE NumeroCliente = '{$userId}'";
 
         $registro = mysqli_query($con, $query);
@@ -114,9 +118,6 @@
         }
 
     }
-
-    // TODO opcion para elmimar un registro, usando metodo "DELETE" y IDs necesarios
-    // TODO opcion para ACTUALIZAR un registro. o se usa el mismo de GUARDAR??
 
     $data = json_encode($vec, JSON_INVALID_UTF8_IGNORE);
     echo $data;

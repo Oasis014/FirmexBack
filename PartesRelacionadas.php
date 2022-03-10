@@ -42,7 +42,6 @@
         isset($_GET['userId']) && !empty($_GET['userId'])
     ) {
         $userId = $_GET['userId'];
-        // TODO join para obtener los nombres , en lugar del id
         $query = "SELECT"
             . " NumeroCliente,"
             . " Consecutivo,"

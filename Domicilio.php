@@ -74,6 +74,7 @@
 
         $userId = $_GET['userId'];
         // TODO hacer inner para obtener el texto de "tipoDomicilio", colonia, municipio, estaod y pais
+        // sin sustituir los campos existentes, solo agregar las descripciones
         $query = "SELECT "
         . " TipoDomicilio , "
         . " Calle , "

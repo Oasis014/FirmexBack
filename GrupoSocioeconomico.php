@@ -42,16 +42,19 @@
         isset($_GET['userId']) && !empty($_GET['userId'])
     ) {
         $userId = $_GET['userId'];
-        // TODO join para obtener los nombres , en lugar del id
         $query = "SELECT"
-            . " NumeroCliente,"
-            . " Consecutivo,"
-            . " GrupoSocioeconomicoGpoSoc,"
-            . " NombreGpoSoc,"
-            . " RFCGpoSoc,"
-            . " DireccionGpoSoc"
-        . " FROM mg_ctegposoc"
-        . " WHERE NumeroCliente = '{$userId}'";
+                . " cte.NumeroCliente,"
+                . " cte.Consecutivo,"
+                . " cte.GrupoSocioeconomicoGpoSoc,"
+                . " cte.NombreGpoSoc,"
+                . " cte.RFCGpoSoc,"
+                . " cte.DireccionGpoSoc,"
+                . " cat.desc_45 as 'GrupoSocioeconomicoGpoSocDesc'"
+            . " FROM mg_ctegposoc cte"
+                . " INNER JOIN mg_catcod cat "
+                    . " ON cte.GrupoSocioeconomicoGpoSoc = cat.Catalogo_cve "
+                    . " AND cat.Catalogo_id = 'tipgse' "
+            . " WHERE NumeroCliente = '{$userId}'";
 
         $registro = mysqli_query($con, $query);
 

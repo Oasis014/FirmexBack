@@ -40,15 +40,20 @@
     } else if ( 'GET' === $method &&
       isset($_GET['userId']) && !empty($_GET['userId'])
     ) {
-        // TODO join para obtener los nombres , en lugar del id
+
         $userId = $_GET['userId'];
         $query = "SELECT"
-          . " NumeroCliente, "
-          . " Consecutivo, "
-          . " NombreRefPer, "
-          . " TelefonoRefPer, "
-          . " TipoRelacionRefPer "
-          . " FROM mg_cterefper WHERE NumeroCliente = '{$userId}'";
+            . " cte.Consecutivo, "
+            . " cte.NumeroCliente, "
+            . " cte.NombreRefPer, "
+            . " cte.TelefonoRefPer, "
+            . " cte.TipoRelacionRefPer, "
+            . " cat.desc_45 as 'TipoRelacionRefPerDesc' "
+          . " FROM mg_cterefper cte "
+            . " INNER JOIN mg_catcod cat "
+              . " ON cte.TipoRelacionRefPer = cat.Catalogo_cve "
+              . " AND cat.Catalogo_id = 'tiprpe' "
+          . " WHERE cte.NumeroCliente = '{$userId}'";
 
         $registro = mysqli_query($con, $query);
 

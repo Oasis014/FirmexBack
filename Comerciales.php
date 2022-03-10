@@ -40,7 +40,6 @@
     } else if ( 'GET' === $method &&
       isset($_GET['userId']) && !empty($_GET['userId']) ) {
 
-        // TODO join para obtener los nombres , en lugar del id
         $userId = $_GET['userId'];
         $query = "SELECT"
           . " NumeroCliente, "
