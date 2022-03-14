@@ -72,26 +72,32 @@
         /* OBTIENE TODOS LOS DOMICILIOS DE UN CLIENTE */
     } else if ( 'GET' === $method && isset($_GET['userId']) && !empty($_GET['userId'])) {
 
-        $userId = $_GET['userId'];       
-        $query = "SELECT" 
-                    ."ctedom.TipoDomicilio,"
-                    ."cdom.desc_45 as desc_tipodomicilio,"
-                    ."ctedom.NumeroExterior,"
-                    ."ctedom.NumeroInterior,"
-                    ."ctedom.CodigoPostal," 
-                    ."ctedom.Colonia,"
-                    ."ctedom.Municipio,"
-                    ."cEdo.municipio_desc,"
-                    ."ctedom.Estado,"
-                    ."cEdo.estado_desc,"      
-                    ."ctedom.Pais,"
-                    ."pa.pais_desc"
-                ."FROM mg_ctedom ctedom"
-                ."INNER JOIN mg_paises pa on pa.pais_id=ctedom.pais"
-                ."INNER JOIN mg_catcod cdom on ctedom.tipodomicilio=cdom.catalogo_cve and cdom.catalogo_id='tipdom'"
-                ."INNER JOIN  mg_sepomex cEdo on cEdo.estado_id=ctedom.estado and cEdo.municipio_id=ctedom.municipio"
-                ."and cEdo.codigopostal_id=ctedom.codigopostal and ctedom.colonia=cEdo.asentamiento_desc"      
-                ."WHERE NumeroCliente = {$userId};";
+        $userId = $_GET['userId'];
+        $query = "SELECT"
+                . " cte.TipoDomicilio,"
+                . " cte.Calle,"
+                . " cte.NumeroExterior,"
+                . " cte.NumeroInterior,"
+                . " cte.CodigoPostal,"
+                . " cte.Colonia,"
+                . " cte.Municipio,"
+                . " cte.Estado,"
+                . " cte.Pais,"
+                . " cdom.desc_45 as 'TipoDomicilioDesc',"
+                . " pa.pais_desc as 'PaisDesc',"
+                . " sepo.Estado_desc as 'EstadoDesc',"
+                . " sepo.Municipio_desc as 'MunicipioDesc'"
+            . " FROM mg_ctedom cte"
+            . " INNER JOIN mg_catcod cdom"
+                . " ON cte.tipodomicilio = cdom.catalogo_cve "
+                . " AND cdom.catalogo_id = 'tipdom'"
+            . " INNER JOIN mg_paises pa"
+                . " ON pa.pais_id = cte.pais"
+            . " INNER JOIN mg_sepomex sepo"
+                . " ON cte.Estado = sepo.Estado_id"
+                . " AND cte.Municipio = sepo.Municipio_id"
+                . " AND cte.Colonia = sepo.Asentamiento_desc"
+            . " WHERE cte.NumeroCliente = {$userId}";
         $registro = mysqli_query($con, $query);
 
         while ( $reg = mysqli_fetch_assoc($registro) ) {
