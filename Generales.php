@@ -50,6 +50,7 @@
             . " '{$params['RepresentanteLegal']}', "
             . " '{$params['PresidenteConsejo']}', "
             . " '{$params['Consejero']}', "
+            . " '{$params['Secretario']}', "
             . " @OutNumeroCLiente, "
             . " @OutErrorClave, "
             . " @OutErrorProcedure, "
