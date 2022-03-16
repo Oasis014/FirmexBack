@@ -18,7 +18,6 @@
         $query = "CALL mgsp_ClientesCuentasBancarias("
           . " {$params['NumeroCliente']}, "
           . " 0, "
-          . " '{$params['NombreCuentaBancariaCtaBan']}', "
           . " '{$params['BancoCtaBan']}', "
           . " '{$params['NumeroCuentaCtaBan']}', "
           . " '{$params['ClaveInterbancariaCtaBan']}', "
