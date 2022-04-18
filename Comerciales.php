@@ -44,7 +44,7 @@
         $query = "SELECT"
           . " NumeroCliente, "
           . " Consecutivo, "
-          . " NombreRefcom, "
+          . " NombreRefCom, "
           . " LimiteCreditoRefCom, "
           . " SaldoCuentaRefCom "
           . " FROM mg_cterefcom WHERE NumeroCliente = '{$userId}'";

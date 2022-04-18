@@ -50,7 +50,7 @@
       $query = "SELECT
           Catalogo_cve AS catalogo_cve,
           desc_45
-        FROM mg_catcod WHERE Catalogo_id = '$catId' ORDER BY Catalogo_cve";
+        FROM mg_catcod WHERE Catalogo_id = '$catId' ORDER BY desc_45 DESC";
       $registro = mysqli_query($conn, $query);
       $rows = [];
       while( $reg = mysqli_fetch_assoc($registro) ){

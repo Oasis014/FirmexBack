@@ -54,9 +54,15 @@
     $newFileName = 'user_'.$data->userId.'_doc_'.$data->idDoc.'.'.$infoFile['extension'];
     $dest_path = $uploadFileDir . $newFileName;
 
-    mkdir($uploadFileDir, 0777, true);
+    if (!file_exists($uploadFileDir)) {
+      error_log("FILE NOT EXIST... CREATED");
+      mkdir($uploadFileDir, 0777, true);
+      chmod($uploadFileDir, 0777);
+    }
 
-    if ( move_uploaded_file($fileTmpPath, $dest_path) ) {
+    $resUp = move_uploaded_file($fileTmpPath, $dest_path);
+
+    if ( $resUp ) {
       $response['message'] = 'File is successfully uploaded.';
 
       $query = "CALL mgsp_ClientesDocumentos("
