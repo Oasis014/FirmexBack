@@ -13,27 +13,27 @@
   ];
 
   // ESTO ARCHIVOS SE ELIMINARIAN:
-  // CatalogoActdet.php => 'actdet'
-  // CatalogoActeco.php => 'acteco'
-  // CatalogoBancos.php => 'bancos'
-  // CatalogoCatpue.php => 'catpue'
-  // CatalogoCod_id.php => 'cod_id'
-  // CatalogoEdociv.php => 'edociv'
-  // CatalogoIdentif.php => 'identif'
-  // CatalogonaCION.php => 'naCION'
-  // CatalogoPerjur.php => 'perjur'
-  // CatalogoProfes.php => 'profes'
-  // CatalogoSexo.php => 'sexo'
-  // CatalogoStscte.php => 'stscte'
-  // CatalogoTipded.php => 'tipded'
-  // CatalogoTipdom.php => 'tipdom'
-  // CatalogoTipgse.php => 'tipgse'
-  // CatalogoTipman.php => 'tipman'
-  // CatalogoTipred.php => 'tipred'
-  // CatalogoTiprel.php => 'tiprel'
-  // CatalogoTiprpe.php => 'tiprpe'
-  // CatalogoTiprrc.php => 'tiprrc'
-  // CatalogoTiptel.php => 'tiptel'
+  // TODO borar CatalogoActdet.php => 'actdet' , ya se implementó este archivo en cliente.service.ts
+  // TODO borar CatalogoActeco.php => 'acteco' , ya se implementó este archivo en cliente.service.ts
+  // TODO borar CatalogoBancos.php => 'bancos' , ya se implementó este archivo en cliente.service.ts
+  // TODO borar CatalogoCatpue.php => 'catpue' , ya se implementó este archivo en cliente.service.ts
+  // TODO borar CatalogoCod_id.php => 'cod_id' , ya se implementó este archivo en cliente.service.ts
+  // TODO borar CatalogoEdociv.php => 'edociv' , ya se implementó este archivo en cliente.service.ts
+  // TODO borar CatalogoIdentif.php => 'identif' , ya se implementó este archivo en cliente.service.ts
+  // TODO borar CatalogonaCION.php => 'naCION' , ya se implementó este archivo en cliente.service.ts
+  // TODO borar CatalogoPerjur.php => 'perjur' , ya se implementó este archivo en cliente.service.ts
+  // TODO borar CatalogoProfes.php => 'profes' , ya se implementó este archivo en cliente.service.ts
+  // TODO borar CatalogoSexo.php => 'sexo' , ya se implementó este archivo en cliente.service.ts
+  // TODO borar CatalogoStscte.php => 'stscte' , ya se implementó este archivo en cliente.service.ts
+  // TODO borar CatalogoTipded.php => 'tipded' , ya se implementó este archivo en cliente.service.ts
+  // TODO borar CatalogoTipdom.php => 'tipdom' , ya se implementó este archivo en cliente.service.ts
+  // TODO borar CatalogoTipgse.php => 'tipgse' , ya se implementó este archivo en cliente.service.ts
+  // TODO borar CatalogoTipman.php => 'tipman' , ya se implementó este archivo en cliente.service.ts
+  // TODO borar CatalogoTipred.php => 'tipred' , ya se implementó este archivo en cliente.service.ts
+  // TODO borar CatalogoTiprel.php => 'tiprel' , ya se implementó este archivo en cliente.service.ts
+  // TODO borar CatalogoTiprpe.php => 'tiprpe' , ya se implementó este archivo en cliente.service.ts
+  // TODO borar CatalogoTiprrc.php => 'tiprrc' , ya se implementó este archivo en cliente.service.ts
+  // TODO borar CatalogoTiptel.php => 'tiptel' , ya se implementó este archivo en cliente.service.ts
 
   $mg_catcod = [
     'actdet',  'acteco',  'bancos',  'catpue',
@@ -50,7 +50,7 @@
       $query = "SELECT
           Catalogo_cve AS catalogo_cve,
           desc_45
-        FROM mg_catcod WHERE Catalogo_id = '$catId' ORDER BY desc_45 DESC";
+        FROM mg_catcod WHERE Catalogo_id = '$catId' ORDER BY desc_45 ASC";
       $registro = mysqli_query($conn, $query);
       $rows = [];
       while( $reg = mysqli_fetch_assoc($registro) ){
