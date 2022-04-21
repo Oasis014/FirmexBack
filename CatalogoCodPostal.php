@@ -14,11 +14,12 @@
 
     $estadoId = $_GET['estadoId'];
     $municipioId = $_GET['municipioId'];
+    $asentamientodesc = $_GET['asentamientodesc'];
 
     $query = "SELECT"
         . " DISTINCT(codigoPostal_id) AS cpostal"
         . " FROM mg_sepomex"
-        . " WHERE estado_id = '{$estadoId}' AND municipio_id = '{$municipioId}'"
+        . " WHERE estado_id = '{$estadoId}' AND municipio_id = '{$municipioId}' and asentamiento_desc='{$asentamientodesc}'" 
         . " ORDER BY codigoPostal_id;";
     $registro = mysqli_query($conn, $query);
 
