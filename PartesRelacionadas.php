@@ -43,13 +43,17 @@
     ) {
         $userId = $_GET['userId'];
         $query = "SELECT"
-            . " NumeroCliente,"
-            . " Consecutivo,"
-            . " ParteRelacionadaParRel,"
-            . " NombreParRel,"
-            . " RFCParRel,"
-            . " DireccionParRel"
-        . " FROM mg_cteparrel"
+            . " cte.NumeroCliente,"
+            . " cte.Consecutivo,"
+            . " cte.ParteRelacionadaParRel,"
+            . " cte.NombreParRel,"
+            . " cte.RFCParRel,"
+            . " cte.DireccionParRel,"
+            . " cat.desc_45 as ParteRelacionadaDesc"
+        . " FROM mg_cteparrel cte"
+        . " INNER JOIN mg_catcod cat"
+            . " ON cte.ParteRelacionadaParRel = cat.Catalogo_cve"
+            . " AND cat.Catalogo_id = 'tiprel'"
         . " WHERE NumeroCliente = '{$userId}'";
 
         $registro = mysqli_query($con, $query);
