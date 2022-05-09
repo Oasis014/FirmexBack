@@ -31,7 +31,12 @@
   }
 }
 
-  $numcte=$params->idCliente;
+if ( isset($_GET['idCliente']) && !empty($_GET['idCliente']) ) {
+  $idCliente = $_GET['idCliente'];
+
+  
+
+  $numcte=  $idCliente;
   $currency='MXN';
   
   $mipdf = new MiPdf('P','mm','A4');
@@ -661,6 +666,6 @@ $gporiesgocom=mysqli_query($con ,"select ctegcom.consecutivo,ctegcom.gruporiesgo
     }
   }
 
-  $mipdf -> output() 
-
+  $mipdf -> output() ;
+}
 ?>
