@@ -3,56 +3,71 @@
     header('Access-Control-Allow-Headers: Origin, X-Requestes-Whit, Content-Type, Accept');
     header('Content-Type: application/json');
 
-    if ( 'POST' === $_SERVER['REQUEST_METHOD'] ) {
+    require("./conexion.php");
+    $con = returnConection();
 
-        require("./conexion.php");
-        $con = returnConection();
+    $method = $_SERVER['REQUEST_METHOD'];
+    $response = [];
+
+    if ( 'POST' === $method ) {
 
         $json = file_get_contents('php://input');
         $params = json_decode($json, true);
 
-      
+        /*
+        CREATE DEFINER=`root`@`localhost` PROCEDURE `mgsp_SolicitudesCredito`(
+            IN `InLineaCredito` INTEGER,
+            IN `InSolicitudLinea` INTEGER,
+            IN `InConsecutivo` INTEGER,
+            IN `InTipoCredito` CHAR(2),
+            IN `InPlazo` CHAR(4),
+            IN `InDestino` CHAR(250),
+            IN `InMontoSolicitado` DECIMAL(15,2),
+
+            OUT `OutErrorClave` CHAR(4),
+            OUT `OutErrorProcedure` CHAR(80),
+            OUT `OutErrorDescripcion` CHAR(120)
+        )
+        */
 
         $query = "CALL mgsp_SolicitudesCredito("
-            . " {$params['LineaCredito']}, "
-            . " '{$params['SolicitudLinea']}', "
-            . " {$params['Consecutivo']}, "
-            . " '{$params['TipoCredito']}', "
-            . " '{$params['Plazo']}', "
-            . " '{$params['Destino']}', "
-            . " {$params['MontoSolicitado']}, "
+            . " {$params['solicitudLinea']},"
+            . " {$params['numeroCliente']},"
+            . " '{$params['tipoSolicitud']}',"
+            . " '{$params['estatusSolicitud']}',"
+            . " '{$params['destinoCredito']}',"
+            . " '{$params['origenRecursos']}',"
+            . " {$params['montoFrecuenciaDisposicion']},"
+            . " '{$params['frecuenciaDisposicion']}',"
+            . " {$params['numeroDisposiciones']},"
+            . " {$params['montoFrecuenciaPago']},"
+            . " '{$params['frecuenciaPago']}',"
+            . " {$params['numeroPagos']},"
+            . " '{$params['divisa']}',"
+            . " {$params['montoLineaCredito']},"
+            . " DATE(NOW()),"
+            . " @OutSolicitudLinea, "
             . " @OutErrorClave, "
             . " @OutErrorProcedure, "
             . " @OutErrorDescripcion)";
         error_log($query);
+
         $registro = mysqli_query($con, $query);
+
         $row = mysqli_query($con,
             "SELECT
+                @OutSolicitudLinea as solicitudLinea,
                 @OutErrorClave as errorClave,
                 @OutErrorProcedure as errorSp,
                 @OutErrorDescripcion as errorDescripcion");
-        $vec = [];
-        while ( $reg = mysqli_fetch_assoc($row) ) {
-            $vec[] = $reg;
-        }
 
-        $cad = json_encode($vec, JSON_INVALID_UTF8_IGNORE);
-        echo $cad;
+        $response = mysqli_fetch_assoc($row);
+
     }
 
-    /*
-    PRUEBA CRUDO
-            $query = "CALL mgsp_SolicitudesCredito("
-            . " '55', "
-            . " '03', "
-            . " '3', "
-            . " '02', "
-            . " '12', "
-            . " '02', "
-            . " '120000', "
-            . " @OutErrorClave, "
-            . " @OutErrorProcedure, "
-            . " @OutErrorDescripcion)";
-    */
+    mysqli_close($con);
+
+    $ret = json_encode($response, JSON_INVALID_UTF8_IGNORE);
+    echo $ret;
 
 ?>
