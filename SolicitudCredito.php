@@ -2,6 +2,7 @@
     header('Access-Control-Allow-Origin: *');
     header('Access-Control-Allow-Headers: Origin, X-Requestes-Whit, Content-Type, Accept');
     header('Content-Type: application/json');
+    header('Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT');
 
     require("./conexion.php");
     $con = returnConection();
@@ -58,6 +59,31 @@
             "SELECT
                 @OutSolicitudLinea as solicitudLinea,
                 @OutErrorClave as errorClave,
+                @OutErrorProcedure as errorSp,
+                @OutErrorDescripcion as errorDescripcion");
+
+        $response = mysqli_fetch_assoc($row);
+
+    } else if ( 'DELETE' === $method
+        && isset($_GET['numeroCliente']) && !empty($_GET['numeroCliente'])
+        && isset($_GET['consecutivo']) && !empty($_GET['consecutivo'])
+    ) {
+        $id = $_GET['numeroCliente'];
+        $cons = $_GET['consecutivo'];
+
+        $query = "CALL mgsp_SolicitudesCreditoBorrar("
+            . " {$params['solicitudLinea']}, "
+            . " {$params['consecutivo']}, "
+            . " @OutErrorClave, "
+            . " @OutErrorProcedure, "
+            . " @OutErrorDescripcion)";
+        error_log($query);
+
+        $registro = mysqli_query($con, $query);
+
+        $row = mysqli_query($con,
+            "SELECT
+                @@OutErrorClave as errorClave,
                 @OutErrorProcedure as errorSp,
                 @OutErrorDescripcion as errorDescripcion");
 
