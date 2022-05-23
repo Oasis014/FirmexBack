@@ -35,22 +35,44 @@
   // TODO borar CatalogoTiprrc.php => 'tiprrc' , ya se implementó este archivo en cliente.service.ts
   // TODO borar CatalogoTiptel.php => 'tiptel' , ya se implementó este archivo en cliente.service.ts
 
+  /*
+    NUEVOS CATALOGOS
+    ftefon - Fuente de fondeo
+    prgfon - Programa de fondeo
+    divisa - Divisas
+    tipcre - Tipos de crédito
+    stscnt - Estatus Contable
+    stscrd - Estatus del Crédito
+    calint - Tipos de cálculo de intereses
+    revtas - Tipos de revisión de tasa
+    tasas - Tasas de interés
+    tipdis - Tipos de disposición
+    tipppc - Tipos de Plan de Pago de Capital
+    tipppi - Tipos de Plan de Pago de Interés
+  */
+
   $mg_catcod = [
     'actdet',  'acteco',  'bancos',  'catpue',
     'cod_id',  'edociv',  'identif', 'naCION',
     'perjur',  'profes',  'sexo',    'stscte',
     'tipded',  'tipdom',  'tipgse',  'tipman',
     'tipred',  'tiprel',  'tiprpe',  'tiprrc',
-    'tiptel',  'tipdoc'
+    'tiptel',  'tipdoc',  'ftefon',  'prgfon',
+    'divisa',  'tipcre',  'stscnt',  'stscrd',
+    'calint',  'revtas',  'tasas',   'tipdis',
+    'tipppc',  'tipppi'
   ];
 
   if ( isset($_GET['catid']) && !empty($_GET['catid']) ) {
     $catId = $_GET['catid'];
     if ( in_array($catId, $mg_catcod) ) {
-      $query = "SELECT
-          Catalogo_cve AS catalogo_cve,
-          desc_45
-        FROM mg_catcod WHERE Catalogo_id = '$catId' ORDER BY desc_45 ASC";
+      $query = "SELECT"
+          . " Catalogo_cve AS catalogo_cve,"
+          . " desc_45"
+        . " FROM mg_catcod"
+        . " WHERE Catalogo_id = '{$catId}'"
+          . " AND Catalogo_cve != '0000000000'"
+        . " ORDER BY desc_45 ASC";
       $registro = mysqli_query($conn, $query);
       $rows = [];
       while( $reg = mysqli_fetch_assoc($registro) ){
