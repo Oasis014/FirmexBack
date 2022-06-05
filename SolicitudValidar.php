@@ -18,7 +18,7 @@
             . " @OutErrorClave, "
             . " @OutErrorProcedure, "
             . " @OutErrorDescripcion)";
-
+        error_log($query);
         $registro = mysqli_query($con, $query);
 
         $row = mysqli_query($con,
@@ -30,7 +30,7 @@
 
         $response['data'] = [];
 
-        if ( '000' === $response['errorClave'] ) {
+        // if ( '000' === $response['errorClave'] ) {
 
             $query = "SELECT"
                     . " cli.NumeroCliente AS 'numeroCliente', "
@@ -50,11 +50,12 @@
                     . " LEFT JOIN mg_sucursales suc "
                         . " ON cli.Sucursal = suc.Sucursal_id "
                 . " WHERE NumeroCliente = {$cliente}";
+            error_log($query);
 
             $registro = mysqli_query($con, $query);
 
             array_push($response['data'], mysqli_fetch_assoc($registro));
-        }
+        // }
 
     }
 
