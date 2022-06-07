@@ -15,28 +15,11 @@
         $json = file_get_contents('php://input');
         $params = json_decode($json, true);
 
-        /*
-        CREATE DEFINER=`root`@`localhost` PROCEDURE `mgsp_SolicitudesCredito`(
-            IN `InLineaCredito` INTEGER,
-            IN `InSolicitudLinea` INTEGER,
-            IN `InConsecutivo` INTEGER,
-            IN `InTipoCredito` CHAR(2),
-            IN `InPlazo` CHAR(4),
-            IN `InDestino` CHAR(250),
-            IN `InMontoSolicitado` DECIMAL(15,2),
-
-            OUT `OutErrorClave` CHAR(4),
-            OUT `OutErrorProcedure` CHAR(80),
-            OUT `OutErrorDescripcion` CHAR(120)
-        )
-        */
-
         $query = "CALL mgsp_SolicitudesCredito("
             . " {$params['lineaCredito']},"
             . " {$params['solicitudLinea']},"
             . " '{$params['consecutivo']}',"
             . " '{$params['tipoCredito']}',"
-            . " '{$params['InPlazo']}',"
             . " '{$params['noCuenta']}',"
             . " {$params['montoSolicitado']},"
             . " @OutErrorClave, "
@@ -55,16 +38,42 @@
 
         $response = mysqli_fetch_assoc($row);
 
+    } else if ( 'GET' === $method
+        && isset($_GET['linea']) && !empty($_GET['linea'])
+    ) {
+        $line = $_GET['linea'];
+        $response['data'] = [];
+
+        $query = "SELECT"
+                . " cre.LineaCredito AS 'lineaCredito',"
+                . " cre.SolicitudLinea AS 'solicitudLinea',"
+                . " cre.Consecutivo AS 'consecutivo',"
+                . " cre.TipoCredito AS 'tipoCredito',"
+                . " cat.desc_45 AS 'tipoCreditoDesc',"
+                . " cre.Destino AS 'destino',"
+                . " cre.MontoSolicitado AS 'montoSolicitado'"
+            . " FROM mg_solcredit cre"
+            . " INNER JOIN mg_catcod cat"
+                . " ON cre.TipoCredito = cat.catalogo_cve"
+                . " AND cat.catalogo_id = 'tipcre'"
+            . " WHERE SolicitudLinea = {$line}";
+
+        error_log($query);
+        $registro = mysqli_query($con, $query);
+        while ( $reg = mysqli_fetch_assoc($registro) ) {
+            array_push($response['data'], $reg);
+        }
+
     } else if ( 'DELETE' === $method
-        && isset($_GET['numeroCliente']) && !empty($_GET['numeroCliente'])
+        && isset($_GET['solicitudLinea']) && !empty($_GET['solicitudLinea'])
         && isset($_GET['consecutivo']) && !empty($_GET['consecutivo'])
     ) {
-        $id = $_GET['numeroCliente'];
+        $line = $_GET['solicitudLinea'];
         $cons = $_GET['consecutivo'];
 
         $query = "CALL mgsp_SolicitudesCreditoBorrar("
-            . " {$params['solicitudLinea']}, "
-            . " {$params['consecutivo']}, "
+            . " {$line}, "
+            . " {$cons}, "
             . " @OutErrorClave, "
             . " @OutErrorProcedure, "
             . " @OutErrorDescripcion)";
@@ -74,7 +83,7 @@
 
         $row = mysqli_query($con,
             "SELECT
-                @@OutErrorClave as errorClave,
+                @OutErrorClave as errorClave,
                 @OutErrorProcedure as errorSp,
                 @OutErrorDescripcion as errorDescripcion");
 

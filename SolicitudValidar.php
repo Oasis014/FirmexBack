@@ -30,7 +30,7 @@
 
         $response['data'] = [];
 
-        // if ( '000' === $response['errorClave'] ) {
+        if ( '901' !== $response['errorClave'] ) {
 
             $query = "SELECT"
                     . " cli.NumeroCliente AS 'numeroCliente', "
@@ -55,7 +55,7 @@
             $registro = mysqli_query($con, $query);
 
             array_push($response['data'], mysqli_fetch_assoc($registro));
-        // }
+        }
 
     }
 
